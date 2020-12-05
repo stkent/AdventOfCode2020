@@ -1,27 +1,14 @@
 use regex::Regex;
 
 pub fn solve_part_1(input: &Vec<String>) -> u32 {
-    let re = Regex::new(r"^(?P<int1>\d+)-(?P<int2>\d+) (?P<char>\w): (?P<password>\w+)$").unwrap();
-
-    input
-        .into_iter()
-        .map(|line| {
-            let caps = re.captures(line).unwrap();
-
-            StoredPassword {
-                value: caps.name("password").unwrap().as_str().to_string(),
-                policy: Policy {
-                    character: caps.name("char").unwrap().as_str().parse().unwrap(),
-                    int1: caps.name("int1").unwrap().as_str().parse().unwrap(),
-                    int2: caps.name("int2").unwrap().as_str().parse().unwrap(),
-                },
-            }
-        })
-        .filter(|stored| stored.is_valid_part_1())
-        .count() as u32
+    count_valid(input, StoredPassword::is_valid_part_1)
 }
 
 pub fn solve_part_2(input: &Vec<String>) -> u32 {
+    count_valid(input, StoredPassword::is_valid_part_2)
+}
+
+fn count_valid(input: &Vec<String>, policy: fn(&StoredPassword) -> bool) -> u32 {
     let re = Regex::new(r"^(?P<int1>\d+)-(?P<int2>\d+) (?P<char>\w): (?P<password>\w+)$").unwrap();
 
     input
@@ -38,7 +25,7 @@ pub fn solve_part_2(input: &Vec<String>) -> u32 {
                 },
             }
         })
-        .filter(|stored| stored.is_valid_part_2())
+        .filter(policy)
         .count() as u32
 }
 
@@ -72,8 +59,9 @@ impl StoredPassword {
     fn is_valid_part_2(&self) -> bool {
         let index1 = self.policy.int1 - 1;
         let index2 = self.policy.int2 - 1;
-        let char1 = self.value.as_bytes()[index1 as usize] as char;
-        let char2 = self.value.as_bytes()[index2 as usize] as char;
+        let bytes = self.value.as_bytes();
+        let char1 = bytes[index1 as usize] as char;
+        let char2 = bytes[index2 as usize] as char;
 
         (char1 == self.policy.character || char2 == self.policy.character) && char1 != char2
     }
