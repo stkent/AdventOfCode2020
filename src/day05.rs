@@ -1,62 +1,54 @@
-use regex::Regex;
-
 pub fn solve_part_1(input: &Vec<String>) -> u16 {
-    let re = Regex::new(r"^(?P<binary_row>[FB]{7})(?P<binary_column>[RL]{3})$").unwrap();
+    seat_ids(input)
+        .into_iter()
+        .max()
+        .expect("No solution!")
+}
 
+pub fn solve_part_2(input: &Vec<String>) -> u16 {
+    let mut ids: Vec<u16> = seat_ids(input);
+    ids.sort_unstable();
+
+    let (id_before_own, _) = ids
+        .iter()
+        .zip(ids.iter().skip(1))
+        .find(|(id1, id2)| *id2 - *id1 > 1)
+        .expect("No solution!");
+
+    id_before_own + 1
+}
+
+fn seat_ids(input: &Vec<String>) -> Vec<u16> {
     input
         .into_iter()
-        .map(|line| {
-            let caps = re.captures(line).unwrap();
-
-            let row = caps.name("binary_row")
-                .unwrap()
-                .as_str()
-                .as_bytes()
-                .iter()
-                .enumerate()
-                .fold(0, |acc, (index, &char)| {
-                    let digit = match char {
-                        b'F' => 0,
-                        b'B' => 1,
-                        _ => panic!("Invalid input!")
-                    };
-
-                    acc + (digit << (6 - index))
-                });
-
-            let column = caps.name("binary_column")
-                .unwrap()
-                .as_str()
-                .as_bytes()
-                .iter()
-                .enumerate()
-                .fold(0, |acc, (index, &char)| {
-                    let digit = match char {
-                        b'L' => 0,
-                        b'R' => 1,
-                        _ => panic!("Invalid input!")
-                    };
-
-                    acc + (digit << (2 - index))
-                });
-
-            BoardingPass {
-                row,
-                column,
-            }
-        })
-        .map(|boarding_pass| boarding_pass.seat_id())
-        .max()
-        .unwrap()
+        .map(|input_line| BoardingPass::from(input_line))
+        .map(|pass| pass.seat_id())
+        .collect()
 }
 
 struct BoardingPass {
     row: u8,
-    column: u8,
+    col: u8,
 }
 
 impl BoardingPass {
+    fn from(s: &str) -> BoardingPass {
+        let row = s[..=6]
+            .replace("F", "0")
+            .replace("B", "1");
+
+        let row = u8::from_str_radix(&row, 2).expect("Invalid input!");
+
+        let column = s[7..]
+            .replace("L", "0")
+            .replace("R", "1");
+
+        let col = u8::from_str_radix(&column, 2).expect("Invalid input!");
+
+        BoardingPass { row, col }
+    }
+
     fn seat_id(&self) -> u16 {
-        u16::from(self.row) * 8 + u16::from(self.column)
+        u16::from(self.row) * 8 + u16::from(self.col)
     }
 }

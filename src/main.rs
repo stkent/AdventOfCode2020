@@ -27,6 +27,7 @@ fn main() {
     // Day 03
     let input05: Vec<String> = file_lines("./input05.txt");
     println!("Day  5, Part 1: {}", day05::solve_part_1(&input05));
+    println!("Day  5, Part 2: {}", day05::solve_part_2(&input05));
 }
 
 fn file_lines(file_name: &str) -> Vec<String> {
