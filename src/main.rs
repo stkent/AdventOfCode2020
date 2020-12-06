@@ -5,16 +5,18 @@ mod day02;
 
 fn main() {
     // Day 01
-    let input_01: Vec<u32> = file_lines("./input01.txt")
+    let input01: Vec<u32> = file_lines("./input01.txt")
         .into_iter()
         .map(|line| line.parse::<u32>().unwrap())
         .collect();
 
-    println!("Day  1, Part 1: {}", day01::solve_part_1(&input_01));
-    println!("Day  1, Part 2: {}", day01::solve_part_2(&input_01));
+    println!("Day  1, Part 1: {}", day01::solve_part_1(&input01));
+    println!("Day  1, Part 2: {}", day01::solve_part_2(&input01));
 
     // Day 02
-    let input_02: Vec<String> = file_lines("./input02.txt");
+    let input02: Vec<String> = file_lines("./input02.txt");
+    println!("Day  2, Part 1: {}", day02::solve_part_1(&input02));
+    println!("Day  2, Part 2: {}", day02::solve_part_2(&input02));
 
     println!("Day  2, Part 1: {}", day02::solve_part_1(&input_02));
     println!("Day  2, Part 2: {}", day02::solve_part_2(&input_02));
