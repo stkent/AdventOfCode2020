@@ -20,7 +20,7 @@ pub fn solve_part_2(input: &Vec<String>) -> u16 {
 
 fn seat_ids(input: &Vec<String>) -> Vec<u16> {
     input
-        .into_iter()
+        .iter()
         .map(|input_line| BoardingPass::from(input_line))
         .map(|pass| pass.seat_id())
         .collect()

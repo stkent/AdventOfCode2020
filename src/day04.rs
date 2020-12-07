@@ -5,13 +5,13 @@ use regex::Regex;
 
 pub fn solve_part_1(input: &str) -> u16 {
     complete_passports(input)
-        .into_iter()
+        .iter()
         .count() as u16
 }
 
 pub fn solve_part_2(input: &str) -> u16 {
     complete_passports(input)
-        .into_iter()
+        .iter()
         .filter(|passport| passport.is_valid())
         .count() as u16
 }

@@ -1,4 +1,5 @@
 use std::collections::HashSet;
+
 use itertools::Itertools;
 
 pub fn solve_part_1(input: &str) -> u16 {
@@ -10,13 +11,18 @@ pub fn solve_part_2(input: &str) -> u16 {
 }
 
 fn count(input: &str, group_scorer: fn(&str) -> u16) -> u16 {
-    input.split("\n\n")
+    input
+        .split("\n\n")
         .map(|lines| group_scorer(lines))
         .sum()
 }
 
 fn part_1_group_scorer(group: &str) -> u16 {
-    group.replace("\n", "").chars().unique().count() as u16
+    group
+        .replace("\n", "")
+        .chars()
+        .unique()
+        .count() as u16
 }
 
 fn part_2_group_scorer(group: &str) -> u16 {
@@ -26,12 +32,11 @@ fn part_2_group_scorer(group: &str) -> u16 {
         .fold(
             "abcdefghijklmnopqrstuvwxyz".chars().collect::<HashSet<char>>(),
             |acc, line| {
-                let new_ayes = line.chars().collect::<HashSet<char>>();
-                acc.intersection(&new_ayes).cloned().collect::<HashSet<char>>()
-            }
+                let person_ayes = line.chars().collect();
+                acc.intersection(&person_ayes).cloned().collect()
+            },
         )
-        .into_iter()
-        .count() as u16
+        .len() as u16
 }
 
 #[cfg(test)]

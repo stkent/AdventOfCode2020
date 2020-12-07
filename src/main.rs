@@ -10,7 +10,7 @@ mod day06;
 fn main() {
     // Day 01
     let input01: Vec<u32> = file_strings("./input01.txt")
-        .into_iter()
+        .iter()
         .map(|line| line.parse::<u32>().unwrap()).collect();
 
     println!("Day  1, Part 1: {}", day01::solve_part_1(&input01));
@@ -45,7 +45,7 @@ fn main() {
 fn file_strings(file_name: &str) -> Vec<String> {
     file_string(file_name)
         .lines()
-        .map(|line| line.to_string())
+        .map(ToString::to_string)
         .collect()
 }
 

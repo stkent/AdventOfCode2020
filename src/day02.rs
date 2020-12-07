@@ -12,7 +12,7 @@ fn count_valid(input: &Vec<String>, policy: fn(&StoredPassword) -> bool) -> u32 
     let re = Regex::new(r"^(?P<int1>\d+)-(?P<int2>\d+) (?P<char>\w): (?P<password>\w+)$").unwrap();
 
     input
-        .into_iter()
+        .iter()
         .map(|line| {
             let caps = re.captures(line).unwrap();
 

@@ -13,7 +13,8 @@ pub fn solve_part_2(input: &Vec<String>) -> u32 {
 pub fn trees_encountered(input: &Vec<String>, dx: u32, dy: u32) -> u32 {
     let width = input[0].len() as u32;
 
-    input.iter()
+    input
+        .iter()
         .step_by(dy as usize)
         .enumerate()
         .skip(1)
