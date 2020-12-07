@@ -39,6 +39,7 @@ fn main() {
     // Day 06
     let input06: String = file_string("./input06.txt");
     println!("Day  6, Part 1: {}", day06::solve_part_1(&input06));
+    println!("Day  6, Part 2: {}", day06::solve_part_2(&input06));
 }
 
 fn file_strings(file_name: &str) -> Vec<String> {

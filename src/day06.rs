@@ -1,17 +1,37 @@
 use std::collections::HashSet;
+use itertools::Itertools;
 
 pub fn solve_part_1(input: &str) -> u16 {
-    input.split("\n\n")
-        .map(|lines| {
-            let mut ayes = HashSet::<char>::new();
-            lines.split("\n")
-                .into_iter()
-                .for_each(|line| ayes.extend(line.chars().into_iter()));
+    count(input, crate::day06::part_1_group_scorer)
+}
 
-            ayes
-        })
-        .map(|ayes| ayes.into_iter().count())
-        .sum::<usize>() as u16
+pub fn solve_part_2(input: &str) -> u16 {
+    count(input, crate::day06::part_2_group_scorer)
+}
+
+fn count(input: &str, group_scorer: fn(&str) -> u16) -> u16 {
+    input.split("\n\n")
+        .map(|lines| group_scorer(lines))
+        .sum()
+}
+
+fn part_1_group_scorer(group: &str) -> u16 {
+    group.replace("\n", "").chars().unique().count() as u16
+}
+
+fn part_2_group_scorer(group: &str) -> u16 {
+    group
+        .split("\n")
+        .into_iter()
+        .fold(
+            "abcdefghijklmnopqrstuvwxyz".chars().collect::<HashSet<char>>(),
+            |acc, line| {
+                let new_ayes = line.chars().collect::<HashSet<char>>();
+                acc.intersection(&new_ayes).cloned().collect::<HashSet<char>>()
+            }
+        )
+        .into_iter()
+        .count() as u16
 }
 
 #[cfg(test)]
@@ -19,7 +39,7 @@ mod tests {
     use crate::day06;
 
     #[test]
-    fn part_1_example() {
+    fn given_example() {
         let input = "abc\n\
                      \n\
                      a\n\
@@ -36,9 +56,7 @@ mod tests {
                      \n\
                      b";
 
-        let count_sum = day06::solve_part_1(input);
-
-        assert_eq!(count_sum, 11)
+        assert_eq!(day06::solve_part_1(input), 11);
+        assert_eq!(day06::solve_part_2(input), 6);
     }
-
 }
