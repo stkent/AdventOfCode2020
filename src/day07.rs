@@ -1,18 +1,21 @@
 use std::collections::HashMap;
 
+use lazy_static::lazy_static;
 use regex::Regex;
 
 pub fn solve_part_1(input: &Vec<String>) -> u16 {
     let rules = parse_rules(input);
+    let mut memo = HashMap::<String, bool>::new();
     rules
         .keys()
-        .filter(|color| can_contain_other_color(color, GOLD, &rules))
+        .filter(|color| can_contain_shiny_gold(color, &rules, &mut memo))
         .count() as u16
 }
 
 pub fn solve_part_2(input: &Vec<String>) -> u16 {
     let rules = parse_rules(input);
-    contained_bags(GOLD, &rules)
+    let mut memo = HashMap::<String, u16>::new();
+    contained_bags(GOLD, &rules, &mut memo)
 }
 
 type Rules = HashMap<String, HashMap<String, u16>>;
@@ -27,16 +30,20 @@ fn parse_rules(string: &Vec<String>) -> Rules {
 }
 
 fn parse_rule(string: &str) -> (String, HashMap<String, u16>) {
-    let rule_re =
-        Regex::new(r"(?P<color>[\w ]+) bags contain (?P<inners>[\d\w, ]+)\.$")
-            .unwrap();
+    lazy_static! {
+        static ref RULE_RE: Regex =
+            Regex::new(r"(?P<color>[\w ]+) bags contain (?P<inners>[\d\w, ]+)\.$")
+                .unwrap();
+    }
 
-    let inner_re =
-        Regex::new(r"(?P<count>[\d]+) (?P<color>[\w ]+) bags?$")
-            .unwrap();
+    lazy_static! {
+        static ref INNER_RE: Regex =
+            Regex::new(r"(?P<count>[\d]+) (?P<color>[\w ]+) bags?$")
+                .unwrap();
+    }
 
     let rule_caps =
-        rule_re
+        RULE_RE
             .captures(string)
             .expect("Invalid input!");
 
@@ -61,7 +68,7 @@ fn parse_rule(string: &str) -> (String, HashMap<String, u16>) {
                 .split(", ")
                 .map(|inner| {
                     let inner_caps =
-                        inner_re
+                        INNER_RE
                             .captures(inner)
                             .expect("Invalid input!");
 
@@ -88,7 +95,15 @@ fn parse_rule(string: &str) -> (String, HashMap<String, u16>) {
     (outer_color, inner_color_counts)
 }
 
-fn can_contain_other_color(color: &str, other_color: &str, rules: &Rules) -> bool {
+fn can_contain_shiny_gold(
+    color: &str,
+    rules: &Rules,
+    memo: &mut HashMap<String, bool>,
+) -> bool {
+    if let Some(result) = memo.get(color) {
+        return *result;
+    }
+
     let inner_colors: Vec<&str> =
         rules
             .get(color)
@@ -102,12 +117,18 @@ fn can_contain_other_color(color: &str, other_color: &str, rules: &Rules) -> boo
     let indirectly_contains =
         inner_colors
             .iter()
-            .any(|inner_color| can_contain_other_color(inner_color, other_color, rules));
+            .any(|inner_color| can_contain_shiny_gold(inner_color, rules, memo));
 
-    directly_contains || indirectly_contains
+    let result = directly_contains || indirectly_contains;
+    memo.insert(color.to_string(), result);
+    result
 }
 
-fn contained_bags(color: &str, rules: &Rules) -> u16 {
+fn contained_bags(color: &str, rules: &Rules, memo: &mut HashMap<String, u16>) -> u16 {
+    if let Some(result) = memo.get(color) {
+        return *result;
+    }
+
     let inner_color_counts: &HashMap<String, u16> =
         rules
             .get(color)
@@ -121,10 +142,12 @@ fn contained_bags(color: &str, rules: &Rules) -> u16 {
     let indirect_count =
         inner_color_counts
             .iter()
-            .map(|(inner_color, count)| count * contained_bags(inner_color, rules))
+            .map(|(inner_color, count)| count * contained_bags(inner_color, rules, memo))
             .sum::<u16>();
 
-    direct_count + indirect_count
+    let result = direct_count + indirect_count;
+    memo.insert(color.to_string(), result);
+    result
 }
 
 #[cfg(test)]
