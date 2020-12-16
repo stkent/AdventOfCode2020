@@ -1,4 +1,5 @@
 use std::fs::read_to_string;
+use std::str::FromStr;
 
 mod day01;
 mod day02;
@@ -8,12 +9,14 @@ mod day05;
 mod day06;
 mod day07;
 mod day08;
+mod day09;
 
 fn main() {
     // Day 01
     let input01: Vec<u32> = file_strings("./input01.txt")
         .iter()
-        .map(|line| line.parse::<u32>().unwrap()).collect();
+        .map(|line| line.parse::<u32>().unwrap())
+        .collect();
 
     println!("Day  1, Part 1: {}", day01::solve_part_1(&input01));
     println!("Day  1, Part 2: {}", day01::solve_part_2(&input01));
@@ -52,6 +55,16 @@ fn main() {
     let input08: Vec<String> = file_strings("./input08.txt");
     println!("Day  8, Part 1: {}", day08::solve_part_1(&input08));
     println!("Day  8, Part 2: {}", day08::solve_part_2(&input08));
+
+    // Day 09
+    let input09: Vec<u64> = file_strings("./input09.txt")
+        .iter()
+        .map(|line| line.parse().unwrap())
+        .collect();
+
+    let day09_part1_result = day09::solve_part_1(&input09, 25);
+    println!("Day  9, Part 1: {}", day09_part1_result);
+    println!("Day  9, Part 2: {}", day09::solve_part_2(&input09, day09_part1_result));
 }
 
 fn file_strings(file_name: &str) -> Vec<String> {
