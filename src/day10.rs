@@ -26,6 +26,11 @@ pub fn solve_part_1(input: &[u8]) -> u16 {
     ((one_jumps + 1) * (three_jumps + 1)) as u16
 }
 
+pub fn solve_part_2() -> u64 {
+    // See input10_annotated.txt for reasoning!
+    7 * 7 * 7 * 7 * 2 * 7 * 4 * 2 * 7 * 2 * 7 * 4 * 2 * 2 * 2 * 7 * 7 * 4 * 7 * 2 * 2 * 7
+}
+
 #[cfg(test)]
 mod tests {
     use crate::day10;

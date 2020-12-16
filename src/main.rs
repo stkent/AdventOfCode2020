@@ -74,6 +74,7 @@ fn main() {
         .collect();
 
     println!("Day 10, Part 1: {}", day10::solve_part_1(&input10));
+    println!("Day 10, Part 2: {}", day10::solve_part_2());
 }
 
 fn file_strings(file_name: &str) -> Vec<String> {
