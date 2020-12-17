@@ -1,5 +1,3 @@
-use itertools::Itertools;
-
 pub fn solve_part_1(input: &[u8]) -> u16 {
     let mut input_copy: Vec<u8> = input.to_vec();
     input_copy.sort_unstable();

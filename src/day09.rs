@@ -1,6 +1,5 @@
 use Ordering::{Equal, Greater, Less};
 use std::cmp::Ordering;
-use std::ops::Range;
 
 pub fn solve_part_1(input: &[u64], window_size: usize) -> u64 {
     'outer: for target_index in window_size..input.len() {
