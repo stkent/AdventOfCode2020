@@ -91,6 +91,8 @@ fn main() {
     // Day 15
     let input15: Vec<u32> = vec![2, 0, 6, 12, 1, 3];
     println!("Day 15, Part 1: {}", day15::solve_part_1(&input15));
+    // Slow; run in release mode!
+    println!("Day 15, Part 2: {}", day15::solve_part_2(&input15));
 }
 
 fn file_strings(file_name: &str) -> Vec<String> {
