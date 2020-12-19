@@ -10,6 +10,7 @@ mod day07;
 mod day08;
 mod day09;
 mod day10;
+mod day11;
 mod day12;
 mod day13;
 mod day15;
@@ -77,6 +78,10 @@ fn main() {
 
     println!("Day 10, Part 1: {}", day10::solve_part_1(&input10));
     println!("Day 10, Part 2: {}", day10::solve_part_2());
+
+    // Day 11
+    let input11: Vec<String> = file_strings("./input11.txt");
+    println!("Day 11, Part 1: {}", day11::solve_part_1(&input11));
 
     // Day 12
     let input12: Vec<String> = file_strings("./input12.txt");
