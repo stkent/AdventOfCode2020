@@ -82,6 +82,7 @@ fn main() {
     // Day 11
     let input11: Vec<String> = file_strings("./input11.txt");
     println!("Day 11, Part 1: {}", day11::solve_part_1(&input11));
+    println!("Day 11, Part 2: {}", day11::solve_part_2(&input11));
 
     // Day 12
     let input12: Vec<String> = file_strings("./input12.txt");

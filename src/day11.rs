@@ -1,4 +1,15 @@
 pub fn solve_part_1(input: &[String]) -> u16 {
+    solve(input, &next_state_part_1)
+}
+
+pub fn solve_part_2(input: &[String]) -> u16 {
+    solve(input, &next_state_part_2)
+}
+
+pub fn solve(
+    input: &[String],
+    next_state_fn: &dyn Fn(usize, usize, &Vec<Vec<char>>) -> char
+) -> u16 {
     let mut current_map: Vec<Vec<char>> =
         input
             .iter()
@@ -6,57 +17,19 @@ pub fn solve_part_1(input: &[String]) -> u16 {
             .collect();
 
     loop {
-        // println!("-------------");
-        // print_map(&current_map);
-        // println!("-------------");
-
         let new_map: &mut Vec<Vec<char>> =
             &mut vec![vec![FLOOR; current_map[0].len()]; current_map.len()];
 
+        let mut changed = false;
+
         for x in 0usize..current_map[0].len() {
             for y in 0usize..current_map.len() {
-                let current: &char = &current_map[y][x];
-
-                new_map[y][x] = match *current {
-                    FLOOR => FLOOR,
-
-                    EMPTY_SEAT => {
-                        let neighbors: Vec<&char> = current_neighbors(x, y, &current_map);
-
-                        let no_occupied_neighbors =
-                            neighbors
-                                .into_iter()
-                                .all(|&neighbor| neighbor != OCCUPIED_SEAT);
-
-                        if no_occupied_neighbors { OCCUPIED_SEAT } else { EMPTY_SEAT }
-                    }
-
-                    OCCUPIED_SEAT => {
-                        let neighbors: Vec<&char> = current_neighbors(x, y, &current_map);
-
-                        let occupied_neighbor_count =
-                            neighbors
-                                .into_iter()
-                                .filter(|&&neighbor| neighbor == OCCUPIED_SEAT)
-                                .count();
-
-                        if occupied_neighbor_count >= 4 { EMPTY_SEAT } else { OCCUPIED_SEAT }
-                    }
-
-                    _ => panic!("Invalid byte!")
-                };
+                new_map[y][x] = next_state_fn(x, y, &current_map);
+                changed = changed || current_map[y][x] != new_map[y][x];
             }
         }
 
-        let mut did_change = false;
-
-        'outer: for x in 0usize..current_map[0].len() {
-            for y in 0usize..current_map.len() {
-                did_change = did_change || current_map[y][x] != new_map[y][x]
-            }
-        }
-
-        if !did_change {
+        if !changed {
             break;
         } else {
             current_map = new_map.to_owned();
@@ -76,15 +49,48 @@ pub fn solve_part_1(input: &[String]) -> u16 {
     result
 }
 
-fn current_neighbors(x: usize, y: usize, current_map: &Vec<Vec<char>>) -> Vec<&char> {
+fn next_state_part_1(x: usize, y: usize, current_map: &Vec<Vec<char>>) -> char {
+    let current: char = current_map[y][x];
+
+    return match current {
+        FLOOR => FLOOR,
+
+        EMPTY_SEAT => {
+            let neighbors: Vec<&char> = neighbors_part_1(x, y, &current_map);
+
+            let no_occupied_neighbors =
+                neighbors
+                    .into_iter()
+                    .all(|&neighbor| neighbor != OCCUPIED_SEAT);
+
+            if no_occupied_neighbors { OCCUPIED_SEAT } else { EMPTY_SEAT }
+        }
+
+        OCCUPIED_SEAT => {
+            let neighbors: Vec<&char> = neighbors_part_1(x, y, &current_map);
+
+            let occupied_neighbor_count =
+                neighbors
+                    .into_iter()
+                    .filter(|&&neighbor| neighbor == OCCUPIED_SEAT)
+                    .count();
+
+            if occupied_neighbor_count >= 4 { EMPTY_SEAT } else { OCCUPIED_SEAT }
+        }
+
+        _ => panic!("Invalid byte!")
+    };
+}
+
+fn neighbors_part_1(x: usize, y: usize, current_map: &Vec<Vec<char>>) -> Vec<&char> {
     let mut result: Vec<&char> = vec![];
 
     for dx in -1isize..=1 {
         for dy in -1isize..=1 {
             if dx == 0 && dy == 0 { continue; }
 
-            let nx: isize = (x as isize) + dx;
-            let ny: isize = (y as isize) + dy;
+            let nx: isize = x as isize + dx;
+            let ny: isize = y as isize + dy;
 
             if nx < 0 { continue; }
             if ny < 0 { continue; }
@@ -101,11 +107,79 @@ fn current_neighbors(x: usize, y: usize, current_map: &Vec<Vec<char>>) -> Vec<&c
     result
 }
 
+fn next_state_part_2(x: usize, y: usize, current_map: &Vec<Vec<char>>) -> char {
+    let current: char = current_map[y][x];
+
+    return match current {
+        FLOOR => FLOOR,
+
+        EMPTY_SEAT => {
+            let neighbors: Vec<&char> = neighbors_part_2(x, y, &current_map);
+
+            let no_occupied_neighbors =
+                neighbors
+                    .into_iter()
+                    .all(|&neighbor| neighbor != OCCUPIED_SEAT);
+
+            if no_occupied_neighbors { OCCUPIED_SEAT } else { EMPTY_SEAT }
+        }
+
+        OCCUPIED_SEAT => {
+            let neighbors: Vec<&char> = neighbors_part_2(x, y, &current_map);
+
+            let occupied_neighbor_count =
+                neighbors
+                    .into_iter()
+                    .filter(|&&neighbor| neighbor == OCCUPIED_SEAT)
+                    .count();
+
+            if occupied_neighbor_count >= 5 { EMPTY_SEAT } else { OCCUPIED_SEAT }
+        }
+
+        _ => panic!("Invalid byte!")
+    };
+}
+
+fn neighbors_part_2(x: usize, y: usize, current_map: &Vec<Vec<char>>) -> Vec<&char> {
+    let mut result: Vec<&char> = vec![];
+
+    for dx in -1isize..=1 {
+        for dy in -1isize..=1 {
+            if dx == 0 && dy == 0 { continue; }
+
+            let mut step: usize = 1;
+
+            loop {
+                let nx: isize = x as isize + step as isize * dx;
+                let ny: isize = y as isize + step as isize * dy;
+
+                if nx < 0 { break; }
+                if ny < 0 { break; }
+
+                let nx = nx as usize;
+                let ny = ny as usize;
+                if nx >= current_map[0].len() { break; }
+                if ny >= current_map.len() { break; }
+
+                let current: &char = &current_map[ny][nx];
+                if *current != FLOOR {
+                    result.push(current);
+                    break;
+                } else {
+                    step += 1;
+                }
+            }
+        }
+    }
+
+    result
+}
+
 const FLOOR: char = '.';
 const EMPTY_SEAT: char = 'L';
 const OCCUPIED_SEAT: char = '#';
 
-fn print_map(map: &Vec<Vec<char>>) {
+fn _print_map(map: &Vec<Vec<char>>) {
     for y in 0usize..map.len() {
         for x in 0usize..map[0].len() {
             print!("{}", map[y][x]);
@@ -139,5 +213,6 @@ mod tests {
                 .collect();
 
         assert_eq!(day11::solve_part_1(&input), 37);
+        assert_eq!(day11::solve_part_2(&input), 26);
     }
 }
