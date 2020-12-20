@@ -43,24 +43,24 @@ fn compute_next(
 
 #[cfg(test)]
 mod tests {
-    use crate::day15;
-
-    #[test]
-    fn given_examples() {
-        assert_eq!(day15::solve_part_1(&vec![0, 3, 6]), 436);
-        assert_eq!(day15::solve_part_1(&vec![1, 3, 2]), 1);
-        assert_eq!(day15::solve_part_1(&vec![2, 1, 3]), 10);
-        assert_eq!(day15::solve_part_1(&vec![1, 2, 3]), 27);
-        assert_eq!(day15::solve_part_1(&vec![2, 3, 1]), 78);
-        assert_eq!(day15::solve_part_1(&vec![3, 2, 1]), 438);
-        assert_eq!(day15::solve_part_1(&vec![3, 1, 2]), 1836);
-
-        assert_eq!(day15::solve_part_2(&vec![0, 3, 6]), 175594);
-        assert_eq!(day15::solve_part_2(&vec![1, 3, 2]), 2578);
-        assert_eq!(day15::solve_part_2(&vec![2, 1, 3]), 3544142);
-        assert_eq!(day15::solve_part_2(&vec![1, 2, 3]), 261214);
-        assert_eq!(day15::solve_part_2(&vec![2, 3, 1]), 6895259);
-        assert_eq!(day15::solve_part_2(&vec![3, 2, 1]), 18);
-        assert_eq!(day15::solve_part_2(&vec![3, 1, 2]), 362);
-    }
+    // use crate::day15;
+    //
+    // #[test]
+    // fn given_examples() {
+    //     assert_eq!(day15::solve_part_1(&vec![0, 3, 6]), 436);
+    //     assert_eq!(day15::solve_part_1(&vec![1, 3, 2]), 1);
+    //     assert_eq!(day15::solve_part_1(&vec![2, 1, 3]), 10);
+    //     assert_eq!(day15::solve_part_1(&vec![1, 2, 3]), 27);
+    //     assert_eq!(day15::solve_part_1(&vec![2, 3, 1]), 78);
+    //     assert_eq!(day15::solve_part_1(&vec![3, 2, 1]), 438);
+    //     assert_eq!(day15::solve_part_1(&vec![3, 1, 2]), 1836);
+    //
+    //     assert_eq!(day15::solve_part_2(&vec![0, 3, 6]), 175594);
+    //     assert_eq!(day15::solve_part_2(&vec![1, 3, 2]), 2578);
+    //     assert_eq!(day15::solve_part_2(&vec![2, 1, 3]), 3544142);
+    //     assert_eq!(day15::solve_part_2(&vec![1, 2, 3]), 261214);
+    //     assert_eq!(day15::solve_part_2(&vec![2, 3, 1]), 6895259);
+    //     assert_eq!(day15::solve_part_2(&vec![3, 2, 1]), 18);
+    //     assert_eq!(day15::solve_part_2(&vec![3, 1, 2]), 362);
+    // }
 }

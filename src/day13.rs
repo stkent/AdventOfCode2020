@@ -60,54 +60,54 @@ pub fn solve_part_2(input: &str) -> u64 {
 
 #[cfg(test)]
 mod tests {
-    use crate::day13;
-
-    #[test]
-    fn given_example_1() {
-        let input: &str = "939\n\
-                           7,13,x,x,59,x,31,19";
-
-        assert_eq!(day13::solve_part_1(&input), 295);
-        assert_eq!(day13::solve_part_2(&input), 1068781);
-    }
-
-    #[test]
-    fn given_example_2() {
-        let input: &str = "\n\
-                           17,x,13,19";
-
-        assert_eq!(day13::solve_part_2(&input), 3417);
-    }
-
-    #[test]
-    fn given_example_3() {
-        let input: &str = "\n\
-                           67,7,59,61";
-
-        assert_eq!(day13::solve_part_2(&input), 754018);
-    }
-
-    #[test]
-    fn given_example_4() {
-        let input: &str = "\n\
-                           67,x,7,59,61";
-
-        assert_eq!(day13::solve_part_2(&input), 779210);
-    }
-
-    #[test]
-    fn given_example_5() {
-        let input: &str = "\n\
-                           67,7,x,59,61";
-
-        assert_eq!(day13::solve_part_2(&input), 1261476);
-    }
-
-    #[test]
-    fn given_example_6() {
-        let input: &str = "\n\
-                           1789,37,47,1889";
-
-        assert_eq!(day13::solve_part_2(&input), 1202161486);
-    }
+    // use crate::day13;
+    //
+    // #[test]
+    // fn given_example_1() {
+    //     let input: &str = "939\n\
+    //                        7,13,x,x,59,x,31,19";
+    //
+    //     assert_eq!(day13::solve_part_1(&input), 295);
+    //     assert_eq!(day13::solve_part_2(&input), 1068781);
+    // }
+    //
+    // #[test]
+    // fn given_example_2() {
+    //     let input: &str = "\n\
+    //                        17,x,13,19";
+    //
+    //     assert_eq!(day13::solve_part_2(&input), 3417);
+    // }
+    //
+    // #[test]
+    // fn given_example_3() {
+    //     let input: &str = "\n\
+    //                        67,7,59,61";
+    //
+    //     assert_eq!(day13::solve_part_2(&input), 754018);
+    // }
+    //
+    // #[test]
+    // fn given_example_4() {
+    //     let input: &str = "\n\
+    //                        67,x,7,59,61";
+    //
+    //     assert_eq!(day13::solve_part_2(&input), 779210);
+    // }
+    //
+    // #[test]
+    // fn given_example_5() {
+    //     let input: &str = "\n\
+    //                        67,7,x,59,61";
+    //
+    //     assert_eq!(day13::solve_part_2(&input), 1261476);
+    // }
+    //
+    // #[test]
+    // fn given_example_6() {
+    //     let input: &str = "\n\
+    //                        1789,37,47,1889";
+    //
+    //     assert_eq!(day13::solve_part_2(&input), 1202161486);
+    // }
 }
